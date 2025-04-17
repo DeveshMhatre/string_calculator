@@ -22,4 +22,11 @@ mod tests {
         let result = add(String::from("12"));
         assert_eq!(result, 12);
     }
+
+    #[test]
+    #[ignore]
+    #[should_panic]
+    fn not_a_number() {
+        let _result = add(String::from("Aj"));
+    }
 }
