@@ -3,8 +3,18 @@ pub fn add(numbers: String) -> i64 {
         return 0;
     }
 
-    let num = numbers.parse::<i64>().unwrap();
-    num
+    let nums: Vec<i64> = numbers
+        .split(",")
+        .map(|n| n.parse::<i64>().unwrap())
+        .collect();
+
+    let mut result = 0;
+
+    for num in nums {
+        result += num;
+    }
+
+    result
 }
 
 #[cfg(test)]
@@ -28,5 +38,11 @@ mod tests {
     #[should_panic]
     fn not_a_number() {
         let _result = add(String::from("Aj"));
+    }
+
+    #[test]
+    fn comma_separated_digits() {
+        let result = add(String::from("1,2,3,12,21"));
+        assert_eq!(result, 39);
     }
 }
