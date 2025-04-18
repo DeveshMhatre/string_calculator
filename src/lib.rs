@@ -3,8 +3,23 @@ pub fn add(numbers: String) -> i64 {
         return 0;
     }
 
-    let nums: Vec<i64> = numbers
-        .split(|n| (n == ',') || (n == '\n'))
+    let mut input = numbers;
+
+    let mut delimiters: Vec<char> = vec![',', '\n'];
+
+    if let Some(first_line) = input.lines().next() {
+        if first_line.starts_with("//") {
+            delimiters.clear();
+            let delimiter = first_line.replace("//", "");
+            for char in delimiter.chars() {
+                delimiters.push(char);
+            }
+            input = input.lines().skip(1).collect();
+        }
+    };
+
+    let nums: Vec<i64> = input
+        .split(|n| delimiters.contains(&n))
         .map(|n| n.parse::<i64>().unwrap())
         .collect();
 
@@ -75,5 +90,11 @@ mod tests {
     #[should_panic]
     fn newline_as_input() {
         let _result = add(String::from("1,\n"));
+    }
+
+    #[test]
+    fn specify_delimiter_at_start() {
+        let result = add(String::from("//;\n1;2"));
+        assert_eq!(result, 3);
     }
 }
