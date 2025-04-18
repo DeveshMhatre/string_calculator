@@ -9,9 +9,23 @@ pub fn add(numbers: String) -> i64 {
         .collect();
 
     let mut result = 0;
+    let mut negative_numbers: Vec<i64> = vec![];
 
     for num in nums {
-        result += num;
+        if num < 0 {
+            negative_numbers.push(num);
+        } else {
+            result += num;
+        }
+    }
+
+    if negative_numbers.len() > 0 {
+        let negative_numbers: Vec<String> =
+            negative_numbers.iter().map(|n| n.to_string()).collect();
+        panic!(
+            "negative numbers not allowed {}",
+            negative_numbers.join(",")
+        )
     }
 
     result
@@ -43,5 +57,11 @@ mod tests {
     fn comma_separated_digits() {
         let result = add(String::from("1,2,3,12,21"));
         assert_eq!(result, 39);
+    }
+
+    #[test]
+    #[should_panic(expected = "negative numbers not allowed")]
+    fn negative_number() {
+        let _result = add(String::from("23,-1,50,-20,5"));
     }
 }
