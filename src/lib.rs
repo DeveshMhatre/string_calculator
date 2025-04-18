@@ -34,10 +34,9 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
     #[should_panic]
     fn not_a_number() {
-        let _result = add(String::from("Aj"));
+        let _result = add(String::from("1,2,34,5,Aj"));
     }
 
     #[test]
