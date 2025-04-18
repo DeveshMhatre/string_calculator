@@ -4,7 +4,7 @@ pub fn add(numbers: String) -> i64 {
     }
 
     let nums: Vec<i64> = numbers
-        .split(",")
+        .split(|n| (n == ',') || (n == '\n'))
         .map(|n| n.parse::<i64>().unwrap())
         .collect();
 
@@ -63,5 +63,17 @@ mod tests {
     #[should_panic(expected = "negative numbers not allowed")]
     fn negative_number() {
         let _result = add(String::from("23,-1,50,-20,5"));
+    }
+
+    #[test]
+    fn comma_and_newline_separated_digits() {
+        let result = add(String::from("1\n2,3"));
+        assert_eq!(result, 6);
+    }
+
+    #[test]
+    #[should_panic]
+    fn newline_as_input() {
+        let _result = add(String::from("1,\n"));
     }
 }
